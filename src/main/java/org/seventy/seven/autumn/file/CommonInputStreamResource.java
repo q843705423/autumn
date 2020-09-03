@@ -2,19 +2,27 @@ package org.seventy.seven.autumn.file;
 
 
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 public class CommonInputStreamResource extends InputStreamResource {
-    private String name;
+    private String filePath;
     private InputStream inputStream;
 
 
-    public CommonInputStreamResource(InputStream inputStream, String name) {
-        super(inputStream);
-        this.inputStream = inputStream;
-        this.name = name;
+    public CommonInputStreamResource(MultipartFile multipartFile) throws IOException {
+        super(multipartFile.getInputStream());
+
+        this.inputStream = multipartFile.getInputStream();
+        String originalFilename = multipartFile.getOriginalFilename();
+        if (!StringUtils.isEmpty(originalFilename)) {
+            this.filePath = originalFilename;
+        } else {
+            this.filePath = multipartFile.getName();
+        }
     }
 
     /**
@@ -26,30 +34,11 @@ public class CommonInputStreamResource extends InputStreamResource {
      */
     @Override
     public String getFilename() {
-        return name;
+        return filePath;
     }
 
-    /**
-     * 覆写父类 contentLength 方法
-     * 因为 {@link org.springframework.core.io.AbstractResource#contentLength()}方法会重新读取一遍文件，
-     * 而上传文件时，restTemplate 会通过这个方法获取大小。然后当真正需要读取内容的时候，发现已经读完，会报如下错误。
-     * <code>
-     * java.lang.IllegalStateException: InputStream has already been read - do not use InputStreamResource if a stream needs to be read multiple times
-     * at org.springframework.core.io.InputStreamResource.getInputStream(InputStreamResource.java:96)
-     * </code>
-     * <p>
-     * ref:com.amazonaws.services.s3.model.S3ObjectInputStream#available()
-     *
-     * @return
-     */
     @Override
-    public long contentLength() {
-        int estimate = 0;
-        try {
-            estimate = inputStream.available();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return estimate == 0 ? 1 : estimate;
+    public long contentLength() throws IOException {
+        return inputStream.available();
     }
 }

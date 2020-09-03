@@ -5,6 +5,7 @@ import org.seventy.seven.autumn.AutumnException;
 import org.seventy.seven.autumn.AutumnObjectUtil;
 import org.seventy.seven.autumn.entity.Invocation;
 import org.seventy.seven.autumn.file.CommonInputStreamResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -71,12 +72,11 @@ public class MultipartFileHandler implements IRequestInvocationHandler {
 
             }
         }
-        stringStringLinkedMultiValueMap.add(parameter.getName(), s);
     }
 
     private void addFile(LinkedMultiValueMap<String, Object> stringStringLinkedMultiValueMap, String name, MultipartFile file) {
         try {
-            CommonInputStreamResource commonInputStreamResource = new CommonInputStreamResource(file.getInputStream(), file.getOriginalFilename());
+            InputStreamResource commonInputStreamResource = new CommonInputStreamResource(file);
             stringStringLinkedMultiValueMap.add(name, commonInputStreamResource);
         } catch (IOException e) {
 
