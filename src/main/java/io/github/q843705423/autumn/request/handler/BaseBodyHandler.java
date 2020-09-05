@@ -50,6 +50,7 @@ public class BaseBodyHandler implements IRequestInvocationHandler {
         }
         HttpHeaders headers = invocation.getHttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        invocation.setHttpBody(multiValueMap);
         return invocation;
     }
 }

@@ -20,7 +20,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
 
-    <groupId>org.seventy.seven</groupId>
+    <groupId>io.github.q843705423</groupId>
     <artifactId>autumn</artifactId>
     <version>0.0.1</version>
     <dependencies>
