@@ -1,5 +1,6 @@
 package io.github.q843705423.autumn;
 
+import io.github.q843705423.autumn.entity.Invocation;
 import io.github.q843705423.autumn.entity.ResponseWrapper;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -17,7 +18,7 @@ import static io.github.q843705423.autumn.util.RequestMappingUtil.getUrl;
  */
 public abstract class AbstractControllerMethodInterceptor implements MethodInterceptor {
 
-    public abstract String getUrlPrefix(Class<?> clazz, Method method, Object[] params);
+    public abstract String getUrlPrefix(Invocation invocation);
 
     private Class<?> superclass;
 
@@ -36,16 +37,16 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
 
         List<String> urls = calculateUrl(annotation.value(), getUrl(method));
         assert !urls.isEmpty();
-
-
-        return call(getUrlPrefix(superclass, method, params), urls.get(0), params, method);
+        Invocation invocation = new Invocation(o.getClass(), method, params);
+        invocation.setUri(urls.get(0));
+        invocation.setUrlPrefix(getUrlPrefix(invocation));
+        return call(invocation);
     }
 
-    private Object call(String urlPrefix, String uri, Object[] params, Method method) throws Exception {
+    private Object call(Invocation invocation) throws Exception {
         AbstractRequester abstractRequester = getAbstractRequester();
-        final String url = urlPrefix + uri;
-        ResponseWrapper response = abstractRequester.request(url, params, method);
-        return getAbstractResponseProcessor().processingResponse(url, params, method, response);
+        ResponseWrapper response = abstractRequester.request(invocation);
+        return getAbstractResponseProcessor().processingResponse(invocation, response);
     }
 
     protected abstract AbstractResponseProcessor getAbstractResponseProcessor();

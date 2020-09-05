@@ -14,10 +14,9 @@ import java.util.List;
 public abstract class AbstractRequester {
 
 
-    public ResponseWrapper request(String url, Object[] params, Method method) {
+    public ResponseWrapper request(Invocation invocation) {
         try {
-            Invocation invocation = new Invocation(null, method, params);
-            invocation.setUrl(url);
+
             invocation.setHttpHeaders(new HttpHeaders());
             invocation.setHttpBody(null);
             AbstractHandlerFactory abstractHandlerFactory = getHandlerFactory();

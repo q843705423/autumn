@@ -1,6 +1,6 @@
 package io.github.q843705423.autumn;
 
-import java.lang.reflect.Method;
+import io.github.q843705423.autumn.entity.Invocation;
 
 public class DefaultControllerMethodInterceptor extends AbstractControllerMethodInterceptor {
 
@@ -10,8 +10,8 @@ public class DefaultControllerMethodInterceptor extends AbstractControllerMethod
     private AbstractResponseProcessor abstractResponseProcessor;
 
     @Override
-    public String getUrlPrefix(Class<?> clazz, Method method, Object[] objects) {
-        return providerUrlPrefix(clazz, method, objects);
+    public String getUrlPrefix(Invocation invocation) {
+        return providerUrlPrefix(invocation);
     }
 
     @Override
@@ -40,12 +40,9 @@ public class DefaultControllerMethodInterceptor extends AbstractControllerMethod
     /**
      * 客户端用户用于提供前缀
      *
-     * @param clazz   被代理的控制器
-     * @param method  被调用的方法
-     * @param objects 方法的参数
      * @return 调用地址前缀
      */
-    protected String providerUrlPrefix(Class<?> clazz, Method method, Object[] objects) {
-        return urlPrefixProvider.provider(clazz, method, objects);
+    protected String providerUrlPrefix(Invocation invocation) {
+        return urlPrefixProvider.provider(invocation);
     }
 }

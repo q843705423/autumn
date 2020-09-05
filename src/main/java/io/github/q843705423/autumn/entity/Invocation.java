@@ -6,7 +6,8 @@ import java.lang.reflect.Method;
 
 public class Invocation {
 
-    private String url;
+
+    private String urlPrefix;
 
     private HttpHeaders httpHeaders;
 
@@ -18,13 +19,19 @@ public class Invocation {
 
     private final Object[] methodParam;
 
+    private String uri;
+
 
     public String getUrl() {
-        return url;
+        return urlPrefix + uri;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
     }
 
     public HttpHeaders getHttpHeaders() {
@@ -47,6 +54,13 @@ public class Invocation {
         return proxyClass;
     }
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
     public Method getMethod() {
         return method;
