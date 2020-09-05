@@ -16,7 +16,6 @@ public abstract class AbstractRequester {
 
     public ResponseWrapper request(String url, Object[] params, Method method) {
         try {
-            final RestTemplate restTemplate = getRestTemplate();
             Invocation invocation = new Invocation(null, method, params);
             invocation.setUrl(url);
             invocation.setHttpHeaders(new HttpHeaders());
@@ -24,6 +23,7 @@ public abstract class AbstractRequester {
             AbstractHandlerFactory abstractHandlerFactory = getHandlerFactory();
 
             invocation = abstractHandlerFactory.deal(invocation);
+            final RestTemplate restTemplate = getRestTemplate(invocation);
             HttpEntity<?> requestEntity = new HttpEntity<>(invocation.getHttpBody(), invocation.getHttpHeaders());
 
             String finalUrl = getFinalUrl(invocation.getUrl(), invocation.getMethodParam(), invocation.getMethod());
@@ -37,9 +37,7 @@ public abstract class AbstractRequester {
 
     protected abstract AbstractHandlerFactory getHandlerFactory();
 
-    protected RestTemplate getRestTemplate() {
-        return new RestTemplate();
-    }
+    public abstract RestTemplate getRestTemplate(Invocation invocation);
 
 
     public static abstract class AbstractHandlerFactory {

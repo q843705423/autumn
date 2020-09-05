@@ -1,8 +1,8 @@
 package io.github.q843705423.autumn;
 
-import java.lang.reflect.Method;
+import io.github.q843705423.autumn.entity.Invocation;
 
 public interface ObjectProvider<T> {
-    T provider(Class<?> clazz, Method method, Object[] objects);
+    T provider(Invocation invocation);
 
 }

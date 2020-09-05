@@ -1,7 +1,8 @@
 package io.github.q843705423.autumn;
 
-import io.github.q843705423.autumn.request.facotory.DefaultHandlerFactory;
 import io.github.q843705423.autumn.entity.Configuration;
+import io.github.q843705423.autumn.request.facotory.DefaultHandlerFactory;
+import org.springframework.web.client.RestTemplate;
 
 public class DefaultContextFactory extends AbstractContextFactory {
 
@@ -17,8 +18,13 @@ public class DefaultContextFactory extends AbstractContextFactory {
     }
 
     @Override
+    protected ObjectProvider<RestTemplate> getRestTemplateProvider() {
+        return invocation -> new RestTemplate();
+    }
+
+    @Override
     public AbstractRequester getAbstractRequester() {
-        return new DefaultRequester(new DefaultHandlerFactory());
+        return new DefaultRequester(new DefaultHandlerFactory(), getRestTemplateProvider());
     }
 
     @Override

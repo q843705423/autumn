@@ -3,6 +3,7 @@ package io.github.q843705423.autumn;
 
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
@@ -54,5 +55,6 @@ public abstract class AbstractContextFactory {
     protected abstract AbstractRequester getAbstractRequester();
 
     protected abstract AbstractResponseProcessor getAbstractResponseProcessor();
+    protected abstract ObjectProvider<RestTemplate> getRestTemplateProvider();
 
 }
