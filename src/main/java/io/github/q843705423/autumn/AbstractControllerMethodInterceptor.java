@@ -33,7 +33,7 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
     public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
         Controller controller = superclass.getAnnotation(Controller.class);
         RestController restController = superclass.getAnnotation(RestController.class);
-        if (controller == null || restController == null) {
+        if (controller == null && restController == null) {
             throw new AutumnException(String.format("%s need @Controller or @RestController annotation, please add this annotation to this class", superclass.getName()));
         }
 
