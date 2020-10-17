@@ -31,7 +31,6 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
 
     @Override
     public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
-
         Controller controller = superclass.getAnnotation(Controller.class);
         RestController restController = superclass.getAnnotation(RestController.class);
         if (controller == null || restController == null) {
