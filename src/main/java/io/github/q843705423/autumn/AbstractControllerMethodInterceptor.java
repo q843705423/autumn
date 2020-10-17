@@ -14,7 +14,7 @@ import static io.github.q843705423.autumn.util.RequestMappingUtil.getUrl;
 
 
 /**
- * 抽象 控制器 方法 拦截器
+ * abstract controller method interceptor
  */
 public abstract class AbstractControllerMethodInterceptor implements MethodInterceptor {
 

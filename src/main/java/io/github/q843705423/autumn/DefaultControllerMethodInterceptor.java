@@ -38,9 +38,9 @@ public class DefaultControllerMethodInterceptor extends AbstractControllerMethod
 
 
     /**
-     * 客户端用户用于提供前缀
+     * client user is used to provide prefix
      *
-     * @return 调用地址前缀
+     * @return call address prefix
      */
     protected String providerUrlPrefix(Invocation invocation) {
         return urlPrefixProvider.provider(invocation);

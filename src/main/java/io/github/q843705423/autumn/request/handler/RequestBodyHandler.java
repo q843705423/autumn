@@ -22,7 +22,7 @@ public class RequestBodyHandler implements IRequestInvocationHandler {
             return invocation;
         }
 
-        //TODO 检查其他Object是否存在File字段,如果有，就抛异常
+        //TODO Check whether there is a File field in other Objects, if there is, throw an exception
         return dealWithUrl(dealWithHttpBody(invocation));
 
     }
