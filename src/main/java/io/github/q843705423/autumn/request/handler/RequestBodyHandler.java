@@ -73,7 +73,7 @@ public class RequestBodyHandler implements IRequestInvocationHandler {
 
 
         }
-        invocation.setUrl(invocation.getUrl() + suffix);
+        invocation.setUri(invocation.getUri() + suffix);
         return invocation;
     }
 
