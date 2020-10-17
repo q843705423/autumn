@@ -9,6 +9,7 @@ import io.github.q843705423.autumn.response.handler.ListResponseHandler;
 import io.github.q843705423.autumn.response.handler.StringReturnResponseHandler;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class DefaultResponseHandlerFactory {
@@ -21,6 +22,7 @@ public class DefaultResponseHandlerFactory {
         responseInvocationHandlers.add(new StringReturnResponseHandler());
         responseInvocationHandlers.add(new ListResponseHandler());
         responseInvocationHandlers.add(new BaseObjectResponseHandler());
+        responseInvocationHandlers.sort(Comparator.comparing(IResponseInvocationHandler::order));
 
     }
 
@@ -35,5 +37,10 @@ public class DefaultResponseHandlerFactory {
             }
         }
         return null;
+    }
+
+    public void add(IResponseInvocationHandler responseInvocationHandler) {
+        responseInvocationHandlers.add(responseInvocationHandler);
+        responseInvocationHandlers.sort(Comparator.comparing(IResponseInvocationHandler::order));
     }
 }

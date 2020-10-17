@@ -13,7 +13,7 @@ public class ResponseReturn {
 
     public static ResponseReturn toReturn(Object object) {
         ResponseReturn responseReturn = new ResponseReturn();
-        responseReturn.setReturnValue(true);
+        responseReturn.setReturn(true);
         responseReturn.setReturnValue(object);
         return responseReturn;
 
