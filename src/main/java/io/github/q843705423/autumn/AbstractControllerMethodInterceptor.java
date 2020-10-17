@@ -4,7 +4,9 @@ import io.github.q843705423.autumn.entity.Invocation;
 import io.github.q843705423.autumn.entity.ResponseWrapper;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -30,15 +32,22 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
     @Override
     public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
 
-        RequestMapping annotation = superclass.getAnnotation(RequestMapping.class);
-        if (annotation == null) {
-            throw new AutumnException(String.format("%s need @RequestMapping annotation, please add this annotation to this class", superclass.getName()));
+        Controller controller = superclass.getAnnotation(Controller.class);
+        RestController restController = superclass.getAnnotation(RestController.class);
+        if (controller == null || restController == null) {
+            throw new AutumnException(String.format("%s need @Controller or @RestController annotation, please add this annotation to this class", superclass.getName()));
         }
 
+
+        RequestMapping annotation = superclass.getAnnotation(RequestMapping.class);
+        String uri = "/";
+
         List<String> urls = calculateUrl(annotation.value(), getUrl(method));
-        assert !urls.isEmpty();
+        if (!urls.isEmpty()) {
+            uri = urls.get(0);
+        }
         Invocation invocation = new Invocation(o.getClass(), method, params);
-        invocation.setUri(urls.get(0));
+        invocation.setUri(uri);
         invocation.setUrlPrefix(getUrlPrefix(invocation));
         return call(invocation);
     }

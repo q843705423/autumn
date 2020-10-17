@@ -10,6 +10,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.lang.reflect.Parameter;
 import java.util.List;
 
 import static io.github.q843705423.autumn.AutumnObjectUtil.findParamContainTypeFieldIndex;
@@ -30,13 +31,14 @@ public class BaseBodyHandler implements IRequestInvocationHandler {
     }
 
     private Invocation deal(Invocation invocation) {
-        Class<?>[] parameterTypes = invocation.getMethod().getParameterTypes();
+        Parameter[] parameters = invocation.getMethod().getParameters();
         Object[] params = invocation.getMethodParam();
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-        for (int i = 0; i < parameterTypes.length; i++) {
-            Class<?> parameterType = parameterTypes[i];
+        for (int i = 0; i < parameters.length; i++) {
+            Parameter parameter = parameters[i];
+            Class<?> parameterType = parameter.getType();
             if (AutumnObjectUtil.isSimpleType(parameterType)) {
-                multiValueMap.add(parameterType.getSimpleName(), String.valueOf(params[i]));
+                multiValueMap.add(parameter.getName(), String.valueOf(params[i]));
             } else {
                 JSONObject res = JSON.parseObject(JSON.toJSONString(params[i]));
                 res.forEach((key, v) -> {
