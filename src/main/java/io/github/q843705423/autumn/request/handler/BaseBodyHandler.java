@@ -55,4 +55,10 @@ public class BaseBodyHandler implements IRequestInvocationHandler {
         invocation.setHttpBody(multiValueMap);
         return invocation;
     }
+
+
+    @Override
+    public int order() {
+        return 300;
+    }
 }

@@ -1,6 +1,8 @@
 package io.github.q843705423.autumn;
 
 
+import io.github.q843705423.autumn.request.facotory.DefaultRequestHandlerFactory;
+import io.github.q843705423.autumn.response.factory.DefaultResponseHandlerFactory;
 import org.springframework.cglib.proxy.Callback;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.web.client.RestTemplate;
@@ -50,11 +52,16 @@ public abstract class AbstractContextFactory {
     }
 
 
+    protected abstract AbstractRequester.AbstractRequestHandlerFactory getAbstractRequestHandlerFactory() ;
+
     protected abstract ObjectProvider<String> getUrlPrefixProvider();
 
     protected abstract AbstractRequester getAbstractRequester();
 
     protected abstract AbstractResponseProcessor getAbstractResponseProcessor();
+
+    protected abstract DefaultResponseHandlerFactory getDefaultResponseHandlerFactory();
+
     protected abstract ObjectProvider<RestTemplate> getRestTemplateProvider();
 
 }

@@ -1,15 +1,13 @@
 package io.github.q843705423.autumn;
 
-import io.github.q843705423.autumn.entity.ResponseWrapper;
 import io.github.q843705423.autumn.entity.Invocation;
-import io.github.q843705423.autumn.request.handler.IRequestInvocationHandler;
+import io.github.q843705423.autumn.entity.ResponseWrapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Method;
-import java.util.List;
 
 public abstract class AbstractRequester {
 
@@ -19,9 +17,9 @@ public abstract class AbstractRequester {
 
             invocation.setHttpHeaders(new HttpHeaders());
             invocation.setHttpBody(null);
-            AbstractHandlerFactory abstractHandlerFactory = getHandlerFactory();
+            AbstractRequestHandlerFactory abstractRequestHandlerFactory = getHandlerFactory();
 
-            invocation = abstractHandlerFactory.deal(invocation);
+            invocation = abstractRequestHandlerFactory.deal(invocation);
             final RestTemplate restTemplate = getRestTemplate(invocation);
             HttpEntity<?> requestEntity = new HttpEntity<>(invocation.getHttpBody(), invocation.getHttpHeaders());
 
@@ -34,15 +32,14 @@ public abstract class AbstractRequester {
         }
     }
 
-    protected abstract AbstractHandlerFactory getHandlerFactory();
+    protected abstract AbstractRequestHandlerFactory getHandlerFactory();
 
     public abstract RestTemplate getRestTemplate(Invocation invocation);
 
 
-    public static abstract class AbstractHandlerFactory {
+    public static abstract class AbstractRequestHandlerFactory {
 
 
-        protected abstract void init(List<IRequestInvocationHandler> requestInvocationHandlerList);
 
         protected abstract Invocation deal(Invocation invocation) throws AutumnException;
     }

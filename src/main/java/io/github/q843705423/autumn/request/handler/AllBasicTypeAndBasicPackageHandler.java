@@ -27,6 +27,7 @@ public class AllBasicTypeAndBasicPackageHandler implements IRequestInvocationHan
         return deal(invocation);
     }
 
+
     private Invocation deal(Invocation invocation) {
         Method method = invocation.getMethod();
         Object[] params = invocation.getMethodParam();
@@ -45,5 +46,11 @@ public class AllBasicTypeAndBasicPackageHandler implements IRequestInvocationHan
         //将header设置为url模式
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         return invocation;
+    }
+
+
+    @Override
+    public int order() {
+        return 200;
     }
 }

@@ -6,7 +6,7 @@
     <artifactId>autumn</artifactId>
     <name>autumn</name>
     <description>This project is an interface calling framework based on springboot. It encapsulates RestTemplate and uses dynamic proxy technology to convert the call to controller into direct call to interface.</description>
-    <version>0.0.2</version>
+    <version>0.0.7</version>
     <modelVersion>4.0.0</modelVersion>
     <url>https://github.com/q843705423/autumn</url>
     <build>

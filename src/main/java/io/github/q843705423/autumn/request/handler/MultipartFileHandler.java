@@ -86,4 +86,9 @@ public class MultipartFileHandler implements IRequestInvocationHandler {
     private String upperFirstLetter(String name) {
         return name == null ? null : name.substring(0, 1).toUpperCase() + name.substring(1);
     }
+
+    @Override
+    public int order() {
+        return 500;
+    }
 }

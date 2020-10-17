@@ -39,12 +39,13 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
 
 
         RequestMapping annotation = superclass.getAnnotation(RequestMapping.class);
-        String uri = "/";
-
-        List<String> urls = calculateUrl(annotation.value(), getUrl(method));
+        String uri = "";
+        String[] prefix = annotation == null ? new String[]{"/"} : annotation.value();
+        List<String> urls = calculateUrl(prefix, getUrl(method));
         if (!urls.isEmpty()) {
             uri = urls.get(0);
         }
+
         Invocation invocation = new Invocation(o.getClass(), method, params);
         invocation.setUri(uri);
         invocation.setUrlPrefix(getUrlPrefix(invocation));

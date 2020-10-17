@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class DefaultHandlerFactory extends AbstractRequester.AbstractHandlerFactory {
+public class DefaultRequestHandlerFactory extends AbstractRequester.AbstractRequestHandlerFactory {
 
 
     private List<IRequestInvocationHandler> requestInvocationHandlerList;
@@ -22,7 +22,7 @@ public class DefaultHandlerFactory extends AbstractRequester.AbstractHandlerFact
 
     }
 
-    public DefaultHandlerFactory() {
+    public DefaultRequestHandlerFactory() {
         this.requestInvocationHandlerList = new ArrayList<>();
         this.requestInvocationHandlerList.add(new NoParameterHandler());
         this.requestInvocationHandlerList.add(new AllBasicTypeAndBasicPackageHandler());
@@ -30,17 +30,13 @@ public class DefaultHandlerFactory extends AbstractRequester.AbstractHandlerFact
         this.requestInvocationHandlerList.add(new RequestBodyHandler());
         this.requestInvocationHandlerList.add(new MultipartFileHandler());
 
-        init(this.requestInvocationHandlerList);
         this.requestInvocationHandlerList.sort(Comparator.comparingInt(IRequestInvocationHandler::order));
     }
 
 
-    protected void init(List<IRequestInvocationHandler> requestInvocationHandlerList) {
-
-    }
 
     public void add(IRequestInvocationHandler invocationHandler) {
         this.requestInvocationHandlerList.add(invocationHandler);
-
+        this.requestInvocationHandlerList.sort(Comparator.comparingInt(IRequestInvocationHandler::order));
     }
 }

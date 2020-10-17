@@ -12,4 +12,9 @@ public class NoParameterHandler implements IRequestInvocationHandler {
         }
         return invocation;
     }
+
+    @Override
+    public int order() {
+        return 100;
+    }
 }

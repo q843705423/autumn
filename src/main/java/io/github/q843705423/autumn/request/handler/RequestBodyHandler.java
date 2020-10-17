@@ -84,4 +84,9 @@ public class RequestBodyHandler implements IRequestInvocationHandler {
             suffix.append("&");
         }
     }
+
+    @Override
+    public int order() {
+        return 400;
+    }
 }

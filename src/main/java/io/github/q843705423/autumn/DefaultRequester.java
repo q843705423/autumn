@@ -9,17 +9,17 @@ import java.lang.reflect.Method;
 public class DefaultRequester extends AbstractRequester {
 
 
-    private AbstractHandlerFactory abstractHandlerFactory;
+    private AbstractRequestHandlerFactory abstractRequestHandlerFactory;
     private ObjectProvider<RestTemplate> restTemplateObjectProvider;
 
-    public DefaultRequester(AbstractHandlerFactory abstractHandlerFactory, ObjectProvider<RestTemplate> restTemplateObjectProvider) {
-        this.abstractHandlerFactory = abstractHandlerFactory;
+    public DefaultRequester(AbstractRequestHandlerFactory abstractRequestHandlerFactory, ObjectProvider<RestTemplate> restTemplateObjectProvider) {
+        this.abstractRequestHandlerFactory = abstractRequestHandlerFactory;
         this.restTemplateObjectProvider = restTemplateObjectProvider;
     }
 
     @Override
-    protected AbstractHandlerFactory getHandlerFactory() {
-        return abstractHandlerFactory;
+    protected AbstractRequestHandlerFactory getHandlerFactory() {
+        return abstractRequestHandlerFactory;
     }
 
     @Override

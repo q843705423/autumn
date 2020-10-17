@@ -1,24 +1,19 @@
 package io.github.q843705423.autumn;
 
-import com.alibaba.fastjson.JSON;
 import io.github.q843705423.autumn.entity.Invocation;
 import io.github.q843705423.autumn.entity.ResponseWrapper;
-import org.springframework.http.ResponseEntity;
+import io.github.q843705423.autumn.response.factory.DefaultResponseHandlerFactory;
 
 public class DefaultResponseProcessor extends AbstractResponseProcessor {
 
+    private DefaultResponseHandlerFactory defaultResponseHandlerFactory;
+
+    public DefaultResponseProcessor(DefaultResponseHandlerFactory defaultResponseHandlerFactory) {
+        this.defaultResponseHandlerFactory = defaultResponseHandlerFactory;
+    }
+
     @Override
     public Object processingResponse(Invocation invocation, ResponseWrapper response) throws Exception {
-        ResponseEntity<String> responseEntity = response.getResponseEntity();
-        if (response.hasError()) {
-            throw response.error();
-        }
-        String body = responseEntity.getBody();
-        Class<?> returnType = invocation.getMethod().getReturnType();
-        if (returnType.equals(String.class)) {
-            return body;
-        } else {
-            return JSON.parseObject(body, returnType);
-        }
+        return defaultResponseHandlerFactory.deal(invocation, response);
     }
 }
