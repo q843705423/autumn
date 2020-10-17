@@ -3,10 +3,11 @@ package io.github.q843705423.autumn.request.handler;
 
 import org.junit.Test;
 
-class MultipartFileHandlerTest {
+public class MultipartFileHandlerTest {
 
     @Test
-    void invocationHandler() {
+    public void invocationHandler() {
+
 
     }
 }
