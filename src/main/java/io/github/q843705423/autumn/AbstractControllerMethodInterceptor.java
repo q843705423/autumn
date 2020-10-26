@@ -31,6 +31,15 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
 
     @Override
     public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
+        if (method.getName().equals("equals") && params.length == 1) {
+            return params[0] == o;
+        }
+        if (method.getName().equals("hashCode")) {
+            return superclass.hashCode();
+        }
+        if (method.getName().equals("toString")) {
+            return superclass.getSimpleName()+"$1";
+        }
         Controller controller = superclass.getAnnotation(Controller.class);
         RestController restController = superclass.getAnnotation(RestController.class);
         if (controller == null && restController == null) {
