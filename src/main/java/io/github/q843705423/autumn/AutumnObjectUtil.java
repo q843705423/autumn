@@ -52,10 +52,10 @@ public class AutumnObjectUtil {
         return requestBodyParamIndex;
     }
 
-    public static List<Integer> findParamContainTypeFieldIndex(Object[] param, Class<?> clazz) {
+    public static List<Integer> findParamContainTypeFieldIndex(Class<?>[] paramType, Class<?> clazz) {
         List<Integer> indexList = new ArrayList<>();
-        for (int i = 0; i < param.length; i++) {
-            if (containTypeField(param[i].getClass(), clazz)) {
+        for (int i = 0; i < paramType.length; i++) {
+            if (containTypeField(paramType[i], clazz)) {
                 indexList.add(i);
             }
         }

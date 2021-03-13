@@ -1,8 +1,12 @@
 package io.github.q843705423.autumn.entity;
 
+import io.github.q843705423.autumn.util.RequestMappingUtil;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Invocation {
 
@@ -19,11 +23,36 @@ public class Invocation {
 
     private final Object[] methodParam;
 
+    private final Class<?>[] methodParamType;
+
     private String uri;
 
+    private Map<String, String> paramList = new HashMap<>();
+
+    public Map<String, String> getParamList() {
+        return paramList;
+    }
+
+    public void setParamList(Map<String, String> paramList) {
+        this.paramList = paramList;
+    }
+
+    private RequestMethod requestMethod;
+
+    public RequestMethod getRequestMethod() {
+        return requestMethod;
+    }
+
+    public void setRequestMethod(RequestMethod requestMethod) {
+        this.requestMethod = requestMethod;
+    }
 
     public String getUrl() {
-        return urlPrefix + uri;
+        return RequestMappingUtil.join(urlPrefix, uri);
+    }
+
+    public Class<?>[] getMethodParamType() {
+        return methodParamType;
     }
 
     public String getUrlPrefix() {
@@ -71,10 +100,11 @@ public class Invocation {
         return methodParam;
     }
 
-    public Invocation(Class<?> proxyClass, Method method, Object[] methodParam) {
+    public Invocation(Class<?> proxyClass, Method method, Object[] methodParam, Class<?>[] methodParamType) {
         this.proxyClass = proxyClass;
         this.method = method;
         this.methodParam = methodParam;
+        this.methodParamType = methodParamType;
     }
 }
 

@@ -16,7 +16,7 @@ public class RequestBodyHandler implements IRequestInvocationHandler {
     public Invocation invocationHandler(Invocation invocation) throws AutumnException {
         List<Integer> requestBodyParamIndex = AutumnObjectUtil.getRequestBodyParamIndex(invocation.getMethod());
         if (requestBodyParamIndex.size() > 1) {
-            throw new AutumnException("@RequestBody only one parameter can be given");
+            throw new AutumnException("@RequestBody only one parameter can be given", invocation);
         }
         if (requestBodyParamIndex.isEmpty()) {
             return invocation;
@@ -62,13 +62,15 @@ public class RequestBodyHandler implements IRequestInvocationHandler {
 
             } else {
                 JSONObject root = JSON.parseObject(JSON.toJSONString(params[i]));
-                root.forEach((key, object) -> {
-                    addSign(suffix);
-                    String str = object instanceof String ? (String) object : JSON.toJSONString(object);
-                    suffix.append(key)
-                            .append("=")
-                            .append(str);
-                });
+                if (root != null) {
+                    root.forEach((key, object) -> {
+                        addSign(suffix);
+                        String str = object instanceof String ? (String) object : JSON.toJSONString(object);
+                        suffix.append(key)
+                                .append("=")
+                                .append(str);
+                    });
+                }
             }
 
 

@@ -6,7 +6,7 @@ import io.github.q843705423.autumn.entity.ResponseReturn;
 import io.github.q843705423.autumn.entity.ResponseWrapper;
 import org.springframework.http.ResponseEntity;
 
-public class BaseObjectResponseHandler implements io.github.q843705423.autumn.response.handler.IResponseInvocationHandler {
+public class BaseObjectResponseHandler implements IResponseInvocationHandler {
     @Override
     public ResponseReturn deal(Invocation invocation, ResponseWrapper responseWrapper) {
         Class<?> returnType = invocation.getMethod().getReturnType();

@@ -1,6 +1,7 @@
 package io.github.q843705423.autumn;
 
 import io.github.q843705423.autumn.entity.Configuration;
+import io.github.q843705423.autumn.lib.HttpComponentsClientRestfulHttpRequestFactory;
 import io.github.q843705423.autumn.request.facotory.DefaultRequestHandlerFactory;
 import io.github.q843705423.autumn.response.factory.DefaultResponseHandlerFactory;
 import org.springframework.web.client.RestTemplate;
@@ -25,7 +26,11 @@ public class DefaultContextFactory extends AbstractContextFactory {
 
     @Override
     protected ObjectProvider<RestTemplate> getRestTemplateProvider() {
-        return invocation -> new RestTemplate();
+        return invocation -> {
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.setRequestFactory(new HttpComponentsClientRestfulHttpRequestFactory());
+            return restTemplate;
+        };
     }
 
     @Override

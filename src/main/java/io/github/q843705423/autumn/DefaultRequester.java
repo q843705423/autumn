@@ -28,7 +28,7 @@ public class DefaultRequester extends AbstractRequester {
     }
 
     @Override
-    protected String getFinalUrl(String url, Object[] params, Method method) {
+    public String getFinalUrl(String url, Object[] params, Method method) {
         return url;
     }
 

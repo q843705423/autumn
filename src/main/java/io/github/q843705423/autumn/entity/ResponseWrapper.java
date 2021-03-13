@@ -20,7 +20,6 @@ public class ResponseWrapper {
 
     public ResponseWrapper(ResponseEntity<String> responseEntity) {
         this.responseEntity = responseEntity;
-
     }
 
     public ResponseEntity<String> getResponseEntity() {

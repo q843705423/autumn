@@ -24,7 +24,7 @@ public class MultipartFileHandler implements IRequestInvocationHandler {
 
     @Override
     public Invocation invocationHandler(Invocation invocation) throws AutumnException {
-        List<Integer> paramContainTypeFieldIndex = findParamContainTypeFieldIndex(invocation.getMethodParam(), MultipartFile.class);
+        List<Integer> paramContainTypeFieldIndex = findParamContainTypeFieldIndex(invocation.getMethodParamType(), MultipartFile.class);
         if (paramContainTypeFieldIndex.isEmpty()) {
             return invocation;
         }

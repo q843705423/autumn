@@ -14,7 +14,8 @@ public class DefaultRequestHandlerFactory extends AbstractRequester.AbstractRequ
 
     private List<IRequestInvocationHandler> requestInvocationHandlerList;
 
-    protected Invocation deal(Invocation invocation) throws AutumnException {
+    @Override
+    public Invocation deal(Invocation invocation) throws AutumnException {
         for (IRequestInvocationHandler iRequestInvocationHandler : requestInvocationHandlerList) {
             invocation = iRequestInvocationHandler.invocationHandler(invocation);
         }

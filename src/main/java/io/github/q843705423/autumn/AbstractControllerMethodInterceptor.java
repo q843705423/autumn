@@ -1,6 +1,7 @@
 package io.github.q843705423.autumn;
 
 import io.github.q843705423.autumn.entity.Invocation;
+import io.github.q843705423.autumn.entity.RequestInfo;
 import io.github.q843705423.autumn.entity.ResponseWrapper;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static io.github.q843705423.autumn.util.RequestMappingUtil.calculateUrl;
-import static io.github.q843705423.autumn.util.RequestMappingUtil.getUrl;
+import static io.github.q843705423.autumn.util.RequestMappingUtil.getTypeAndUrl;
 
 
 /**
@@ -31,33 +31,34 @@ public abstract class AbstractControllerMethodInterceptor implements MethodInter
 
     @Override
     public Object intercept(Object o, Method method, Object[] params, MethodProxy methodProxy) throws Throwable {
-        if (method.getName().equals("equals") && params.length == 1) {
+        if ("equals".equals(method.getName()) && params.length == 1) {
             return params[0] == o;
         }
-        if (method.getName().equals("hashCode")) {
+        if ("hashCode".equals(method.getName())) {
             return superclass.hashCode();
         }
-        if (method.getName().equals("toString")) {
-            return superclass.getSimpleName()+"$1";
+        if ("toString".equals(method.getName())) {
+            return superclass.getSimpleName() + "$1";
         }
+        Invocation invocation = new Invocation(o.getClass(), method, params, method.getParameterTypes());
         Controller controller = superclass.getAnnotation(Controller.class);
         RestController restController = superclass.getAnnotation(RestController.class);
         if (controller == null && restController == null) {
-            throw new AutumnException(String.format("%s need @Controller or @RestController annotation, please add this annotation to this class", superclass.getName()));
+            throw new AutumnException(String.format("%s need @Controller or @RestController annotation, please add this annotation to this class", superclass.getName()), invocation);
         }
-
-
         RequestMapping annotation = superclass.getAnnotation(RequestMapping.class);
-        String uri = "";
-        String[] prefix = annotation == null ? new String[]{"/"} : annotation.value();
-        List<String> urls = calculateUrl(prefix, getUrl(method));
-        if (!urls.isEmpty()) {
-            uri = urls.get(0);
+        String[] prefix = annotation == null || annotation.value().length == 0 ? new String[]{"/"} : annotation.value();
+        List<RequestInfo> typeAndUrl = getTypeAndUrl(prefix, method);
+        RequestInfo uri;
+        if (!typeAndUrl.isEmpty()) {
+            uri = typeAndUrl.get(0);
+        } else {
+            throw new AutumnException("no url available", invocation);
         }
-
-        Invocation invocation = new Invocation(o.getClass(), method, params);
-        invocation.setUri(uri);
+        invocation.setUri(uri.getUrl());
+        invocation.setRequestMethod(uri.getRequestMethod());
         invocation.setUrlPrefix(getUrlPrefix(invocation));
+
         return call(invocation);
     }
 
