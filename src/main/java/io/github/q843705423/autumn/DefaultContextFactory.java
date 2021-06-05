@@ -4,7 +4,10 @@ import io.github.q843705423.autumn.entity.Configuration;
 import io.github.q843705423.autumn.lib.HttpComponentsClientRestfulHttpRequestFactory;
 import io.github.q843705423.autumn.request.facotory.DefaultRequestHandlerFactory;
 import io.github.q843705423.autumn.response.factory.DefaultResponseHandlerFactory;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.StandardCharsets;
 
 public class DefaultContextFactory extends AbstractContextFactory {
 
@@ -28,6 +31,12 @@ public class DefaultContextFactory extends AbstractContextFactory {
     protected ObjectProvider<RestTemplate> getRestTemplateProvider() {
         return invocation -> {
             RestTemplate restTemplate = new RestTemplate();
+            restTemplate.getMessageConverters().forEach(httpMessageConverter -> {
+                if (httpMessageConverter instanceof StringHttpMessageConverter) {
+                    StringHttpMessageConverter stringHttpMessageConverter = (StringHttpMessageConverter) httpMessageConverter;
+                    stringHttpMessageConverter.setDefaultCharset(StandardCharsets.UTF_8);
+                }
+            });
             restTemplate.setRequestFactory(new HttpComponentsClientRestfulHttpRequestFactory());
             return restTemplate;
         };

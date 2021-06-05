@@ -15,10 +15,10 @@ import java.io.UnsupportedEncodingException;
 public interface RestTemplateCall {
 
     /**
-     * RestTemplate的接口调用
+     * RestTemplate theInterfaceCall
      *
-     * @param invocation 调用
-     * @return 返回结果
+     * @param invocation transfer
+     * @return returnResult
      */
     ResponseWrapper call(
                          Invocation invocation,
