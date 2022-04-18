@@ -25,6 +25,8 @@ public class Invocation {
 
     private final Class<?>[] methodParamType;
 
+    private final Map<String, String> pathVariableMap;
+
     private String uri;
 
     private Map<String, String> paramList = new HashMap<>();
@@ -48,7 +50,21 @@ public class Invocation {
     }
 
     public String getUrl() {
-        return RequestMappingUtil.join(urlPrefix, uri);
+        return RequestMappingUtil.join(urlPrefix, updateUriWithPathVariableMap(uri));
+    }
+
+    private String updateUriWithPathVariableMap(String uri) {
+        StringBuilder sb = new StringBuilder();
+        String[] uriArray = uri.split("/");
+        for (String s : uriArray) {
+            if (s.startsWith("{") && s.endsWith("}")) {
+                String key = s.substring(1, s.length() - 1);
+                if (pathVariableMap.containsKey(key)) {
+                    sb.append("/").append(pathVariableMap.get(key));
+                }
+            }
+        }
+        return sb.toString();
     }
 
     public Class<?>[] getMethodParamType() {
@@ -100,11 +116,16 @@ public class Invocation {
         return methodParam;
     }
 
+    public Map<String, String> getPathVariableMap() {
+        return pathVariableMap;
+    }
+
     public Invocation(Class<?> proxyClass, Method method, Object[] methodParam, Class<?>[] methodParamType) {
         this.proxyClass = proxyClass;
         this.method = method;
         this.methodParam = methodParam;
         this.methodParamType = methodParamType;
+        this.pathVariableMap = RequestMappingUtil.getPathVariable(method, methodParam);
     }
 }
 

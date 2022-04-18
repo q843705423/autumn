@@ -2,7 +2,7 @@ package io.github.q843705423.autumn;
 
 import io.github.q843705423.autumn.entity.Configuration;
 import io.github.q843705423.autumn.lib.HttpComponentsClientRestfulHttpRequestFactory;
-import io.github.q843705423.autumn.request.facotory.DefaultRequestHandlerFactory;
+import io.github.q843705423.autumn.request.factory.DefaultRequestHandlerFactory;
 import io.github.q843705423.autumn.response.factory.DefaultResponseHandlerFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;

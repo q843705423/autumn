@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -188,5 +186,21 @@ public class RequestMappingUtil {
             }
         }
         return false;
+    }
+
+    public static Map<String, String> getPathVariable(Method method,Object[] args) {
+        Map<String, String> pathVariable = new HashMap<>();
+        Annotation[][] parameterAnnotations = method.getParameterAnnotations();
+        for (int i = 0; i < parameterAnnotations.length; i++) {
+            Annotation[] annotations = parameterAnnotations[i];
+            for (Annotation annotation : annotations) {
+                if (annotation.annotationType().getName().equals(PathVariable.class.getName())) {
+                    PathVariable pathVariable1 = (PathVariable) annotation;
+                    pathVariable.put(pathVariable1.value(), args[i].toString());
+
+                }
+            }
+        }
+        return pathVariable;
     }
 }

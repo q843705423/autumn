@@ -1,4 +1,4 @@
-package io.github.q843705423.autumn.request.facotory;
+package io.github.q843705423.autumn.request.factory;
 
 import io.github.q843705423.autumn.AbstractRequester;
 import io.github.q843705423.autumn.AutumnException;
