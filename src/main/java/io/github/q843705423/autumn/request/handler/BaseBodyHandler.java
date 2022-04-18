@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,8 +39,13 @@ public class BaseBodyHandler implements IRequestInvocationHandler {
             Object[] params = invocation.getMethodParam();
             MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
             for (int i = 0; i < parameters.length; i++) {
-                Parameter parameter = parameters[i];
-                Class<?> parameterType = parameter.getType();
+                final Parameter parameter = parameters[i];
+                final Class<?> parameterType = parameter.getType();
+
+                final PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
+                if(pathVariable != null){
+                    continue;
+                }
                 if (AutumnObjectUtil.isSimpleType(parameterType)) {
                     invocation.getParamList().put(parameter.getName(), String.valueOf(params[i]));
                 } else {
@@ -66,6 +72,10 @@ public class BaseBodyHandler implements IRequestInvocationHandler {
             for (int i = 0; i < parameters.length; i++) {
                 Parameter parameter = parameters[i];
                 Class<?> parameterType = parameter.getType();
+                final PathVariable pathVariable = parameter.getAnnotation(PathVariable.class);
+                if(pathVariable != null){
+                    continue;
+                }
                 if (AutumnObjectUtil.isSimpleType(parameterType)) {
                     multiValueMap.add(parameter.getName(), String.valueOf(params[i]));
                 } else {

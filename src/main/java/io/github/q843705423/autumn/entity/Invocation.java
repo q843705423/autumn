@@ -62,6 +62,13 @@ public class Invocation {
                 if (pathVariableMap.containsKey(key)) {
                     sb.append("/").append(pathVariableMap.get(key));
                 }
+            }else if(s.startsWith("{") && s.endsWith("+}")){
+                String key = s.substring(1, s.length() - 2);
+                if (pathVariableMap.containsKey(key)) {
+                    sb.append("/").append(pathVariableMap.get(key));
+                }
+            } else {
+                sb.append("/").append(s);
             }
         }
         return sb.toString();

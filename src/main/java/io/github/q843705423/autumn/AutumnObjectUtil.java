@@ -1,6 +1,8 @@
 package io.github.q843705423.autumn;
 
 import cn.hutool.core.util.ReflectUtil;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,32 +13,9 @@ import java.util.*;
 
 public class AutumnObjectUtil {
 
-    static HashSet<String> set;
-
-    static {
-        set = new HashSet<>();
-        set.add(boolean.class.getName());
-        set.add(byte.class.getName());
-        set.add(short.class.getName());
-        set.add(char.class.getName());
-        set.add(int.class.getName());
-        set.add(float.class.getName());
-        set.add(double.class.getName());
-        set.add(long.class.getName());
-        set.add(Boolean.class.getName());
-        set.add(Byte.class.getName());
-        set.add(Short.class.getName());
-        set.add(Character.class.getName());
-        set.add(Integer.class.getName());
-        set.add(Float.class.getName());
-        set.add(Double.class.getName());
-        set.add(Long.class.getName());
-        set.add(String.class.getName());
-
-    }
 
     public static boolean isSimpleType(Class<?> clazz) {
-        return set.contains(clazz.getName());
+        return ClassUtils.isPrimitiveOrWrapper(clazz) || String.class.equals(clazz);
     }
 
     public static List<Integer> getRequestBodyParamIndex(Method method) {
